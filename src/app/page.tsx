@@ -1,5 +1,6 @@
-import SearchBar from "./components/SearchBar"; // Import the SearchBar component
+import SearchBar from "./components/SearchBar";
 import Image from "next/image";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
@@ -14,7 +15,10 @@ export default function Home() {
           height={250}
         />
         {/* Optional Title */}
-        <SearchBar /> {/* Use the SearchBar component */}
+        <Suspense fallback={<div>Loading search bar...</div>}>
+          <SearchBar />
+        </Suspense>{" "}
+        {/* Wrapped in Suspense for useSearchParams hook */}
         {/* You can remove the 'hello' text or place it elsewhere */}
       </main>
       {/* Optional Footer or other elements can go in row 3 */}
