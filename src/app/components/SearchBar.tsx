@@ -16,10 +16,22 @@ interface SummonerData {
   dogPoints: number;
 }
 
-export default function SearchBar() {
+interface SearchBarProps {
+  onClear?: () => void;
+}
+
+export default function SearchBar({ onClear }: SearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
+  // Clear form and notify parent
+  const handleClear = () => {
+    setSearchTerm("");
+    setSummonerData(null);
+    setError(null);
+    setHasVoted(false);
+    onClear?.();
+  };
   const [summonerData, setSummonerData] = useState<SummonerData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,6 +44,8 @@ export default function SearchBar() {
     if (nameParam) {
       setSearchTerm(nameParam);
       fetchSummoner(nameParam);
+    } else {
+      handleClear();
     }
   }, [searchParams]);
 
@@ -82,14 +96,24 @@ export default function SearchBar() {
           className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
           disabled={loading} // Disable input while loading
         />
-        <button
-          type="submit"
-          // Updated styles: white bg, black text, rounded corners, hover effect
-          className=" px-6 py-2 bg-white text-black rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white cursor-pointer transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
-          disabled={loading} // Disable button while loading
-        >
-          {loading ? "Searching..." : "Search"}
-        </button>
+        <div className="flex gap-4">
+          <button
+            type="submit"
+            // Updated styles: white bg, black text, rounded corners, hover effect
+            className="px-6 py-2 bg-white text-black rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 cursor-pointer transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={loading} // Disable button while loading
+          >
+            {loading ? "Searching..." : "Search"}
+          </button>
+          <button
+            type="button"
+            onClick={handleClear}
+            className="px-6 py-2 bg-white text-black rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 cursor-pointer transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={loading}
+          >
+            Clear
+          </button>
+        </div>
       </form>
 
       {/* Display Results, Loading, or Error */}

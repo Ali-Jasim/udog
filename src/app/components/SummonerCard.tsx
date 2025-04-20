@@ -56,7 +56,7 @@ export default function SummonerCard({
         <button
           onClick={onDownvote}
           disabled={votingDisabled}
-          className="flex items-center gap-1 px-4 py-2 bg-white text-black rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white transition-colors duration-150 disabled:opacity-50"
+          className="flex items-center gap-1 px-4 py-2 bg-white text-black rounded-md hover:bg-gray-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white transition-colors duration-150 disabled:opacity-50"
         >
           <Image
             src="/udog-logo.png"
